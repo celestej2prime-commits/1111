@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GastroVolt - Monitoreo Energético</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- PANTALLA DE REGISTRO -->
+    <div id="loginScreen">
+        <div class="login-box">
+
+            <div class="logo-big">⚡ GastroVolt</div>
+
+            <p>Monitoreo Energético para Restaurantes</p>
+
+            <h2>Crear cuenta</h2>
+
+            <form id="registerForm">
+
+                <div class="form-group">
+                    <input id="regNombre"
+                        type="text"
+                        placeholder="Nombre completo"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <input id="regRestaurante"
+                        type="text"
+                        placeholder="Nombre del restaurante"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <input id="regEmail"
+                        type="email"
+                        placeholder="Correo electrónico"
+                        required>
+                </div>
+
+                <div class="form-group password-wrap">
+
+                    <input id="regPassword"
+                        type="password"
+                        placeholder="Contraseña"
+                        required
+                        minlength="4">
+
+                    <button class="eye-btn"
+                        id="togglePassword"
+                        type="button"
+                        aria-label="Mostrar contraseña">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                    </button>
+
+                </div>
+
+                <button class="primary full" type="submit">
+                    Crear cuenta y entrar
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="hidden">
+
+        <!-- MENU LATERAL -->
+        <aside class="sidebar">
+
+            <div class="brand">⚡ GastroVolt</div>
+
+            <button class="nav-btn active" data-section="inicio">
+                <i class="fa-solid fa-house"></i> Inicio
+            </button>
+
+            <button class="nav-btn" data-section="equipos">
+                <i class="fa-solid fa-plug"></i> Equipos
+            </button>
+
+            <button class="nav-btn" data-section="consumo">
+                <i class="fa-solid fa-chart-line"></i> Consumo
+            </button>
+
+            <button class="nav-btn" data-section="reportes">
+                <i class="fa-solid fa-file-lines"></i> Reportes
+            </button>
+
+            <button class="nav-btn" data-section="alertas">
+                <i class="fa-solid fa-triangle-exclamation"></i> Alertas
+            </button>
+
+            <button class="nav-btn" data-section="configuracion">
+                <i class="fa-solid fa-gear"></i> Configuración
+            </button>
+
+            <button class="nav-btn" data-section="usuarios">
+                <i class="fa-solid fa-users"></i> Usuarios
+            </button>
+
+            <button class="nav-btn logout" id="logoutBtn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Cerrar sesión
+            </button>
+
+        </aside>
+
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main">
+
+
+            <!-- INICIO -->
+            <section id="inicio" class="section active">
+
+                <div class="topbar">
+                    <div>
+                        <h1>Panel principal</h1>
+
+                        <p class="muted">
+                            Bienvenido a GastroVolt,
+                            <span id="welcomeName"></span>.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="cards">
+
+                    <div class="card">
+                        <i class="fa-solid fa-bolt"></i>
+                        <h2 id="totalConsumo">0 kWh</h2>
+                        <p class="muted">Consumo del mes</p>
+                    </div>
+
+                    <div class="card">
+                        <i class="fa-solid fa-plug"></i>
+                        <h2 id="cantidadEquipos">0</h2>
+                        <p class="muted">Equipos registrados</p>
+                    </div>
+
+                    <div class="card">
+                        <i class="fa-solid fa-money-bill-wave"></i>
+                        <h2 id="costoTotal">Bs 0,00</h2>
+                        <p class="muted">Costo estimado</p>
+                    </div>
+
+                    <div class="card">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                        <h2 id="variacionInicio">0 %</h2>
+                        <p class="muted">Variación mensual</p>
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <h2>Resumen energético</h2>
+
+                    <div id="resumenInicio" class="notice info">
+                        Registra tus equipos para comenzar a obtener información.
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- EQUIPOS -->
+            <section id="equipos" class="section">
+
+                <div class="topbar">
+
+                    <div>
+                        <h1>Equipos eléctricos</h1>
+
+                        <p class="muted">
+                            Registra los equipos y calcula su consumo mensual.
+                        </p>
+                    </div>
+
+                    <button class="primary" id="addEquipoBtn">
+                        <i class="fa-solid fa-plus"></i>
+                        Agregar equipo
+                    </button>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Equipo</th>
+                                <th>Potencia</th>
+                                <th>Uso</th>
+                                <th>Consumo mensual</th>
+                                <th>Costo</th>
+                                <th>Estado</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="equiposTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- CONSUMO -->
+            <section id="consumo" class="section">
+
+                <div class="topbar">
+
+                    <div>
+                        <h1>Consumo energético</h1>
+
+                        <p class="muted">
+                            Información calculada con los datos registrados.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="grid-2">
+
+                    <div class="panel">
+
+                        <h2>Consumo total</h2>
+
+                        <h1 id="consumoTotalSection">
+                            0 kWh
+                        </h1>
+
+                        <p class="muted">
+                            Periodo actual
+                        </p>
+
+                    </div>
+
+
+                    <div class="panel">
+
+                        <h2>Equipo de mayor consumo</h2>
+
+                        <h2 id="mayorEquipo">
+                            Sin datos
+                        </h2>
+
+                        <p class="muted" id="mayorEquipoDetalle">
+                            Registra equipos.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <h2>Participación por equipo</h2>
+
+                    <div id="participacion"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- REPORTES -->
+            <section id="reportes" class="section">
+
+                <div class="topbar">
+
+                    <div>
+
+                        <h1>Reportes mensuales</h1>
+
+                        <p class="muted">
+                            Solo se genera un reporte por cada mes.
+                        </p>
+
+                    </div>
+
+                    <button class="primary" id="downloadPdfBtn">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        Descargar PDF
+                    </button>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="report-header">
+
+                        <h2 id="reportePeriodo">
+                            Reporte mensual
+                        </h2>
+
+                        <span class="badge green">
+                            Periodo mensual
+                        </span>
+
+                    </div>
+
+
+                    <div class="report-cards">
+
+                        <div class="report-stat">
+                            <span>Mes anterior</span>
+                            <strong id="repAnterior">0 kWh</strong>
+                        </div>
+
+                        <div class="report-stat">
+                            <span>Mes actual</span>
+                            <strong id="repActual">0 kWh</strong>
+                        </div>
+
+                        <div class="report-stat">
+                            <span>Variación</span>
+                            <strong id="repVariacion">0 %</strong>
+                        </div>
+
+                        <div class="report-stat">
+                            <span>Costo actual</span>
+                            <strong id="repCosto">Bs 0,00</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="grid-2">
+
+                    <div class="panel">
+
+                        <h2>Comparación de consumo</h2>
+
+                        <div class="compare">
+
+                            <div class="bar-wrap">
+
+                                <div id="barAnterior"
+                                    class="bar prev"
+                                    style="height:5px">
+                                </div>
+
+                                <div class="bar-label">
+                                    Anterior
+                                </div>
+
+                            </div>
+
+
+                            <div class="bar-wrap">
+
+                                <div id="barActual"
+                                    class="bar curr"
+                                    style="height:5px">
+                                </div>
+
+                                <div class="bar-label">
+                                    Actual
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <p class="legend">
+                            La altura de cada barra representa el consumo mensual en kWh.
+                        </p>
+
+                    </div>
+
+
+                    <div class="panel">
+
+                        <h2>Equipos con mayor consumo</h2>
+
+                        <div id="rankingEquipos"></div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <h2>Detalle del reporte</h2>
+
+                    <div id="detalleReporte"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ALERTAS -->
+            <section id="alertas" class="section">
+
+                <div class="topbar">
+
+                    <div>
+
+                        <h1>Alertas</h1>
+
+                        <p class="muted">
+                            Avisos para ayudar a reducir gastos energéticos.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div id="alertasBox"></div>
+
+            </section>
+
+
+            <!-- CONFIGURACION -->
+            <section id="configuracion" class="section">
+
+                <div class="topbar">
+
+                    <div>
+
+                        <h1>Configuración</h1>
+
+                        <p class="muted">
+                            Datos utilizados en los reportes.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <label>Nombre del restaurante</label>
+
+                    <div class="form-group">
+                        <input id="configRestaurante" type="text">
+                    </div>
+
+
+                    <label>Tarifa eléctrica (Bs/kWh)</label>
+
+                    <div class="form-group">
+                        <input id="tarifa"
+                            type="number"
+                            min="0"
+                            step="0.01">
+                    </div>
+
+
+                    <button class="primary" id="saveConfig">
+                        Guardar cambios
+                    </button>
+
+                    <div id="configMsg"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- USUARIOS -->
+            <section id="usuarios" class="section">
+
+                <div class="topbar">
+
+                    <div>
+
+                        <h1>Usuarios</h1>
+
+                        <p class="muted">
+                            Información de la cuenta actual.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <p>
+                        <strong>Nombre:</strong>
+                        <span id="userInfoNombre"></span>
+                    </p>
+
+                    <p style="margin-top:10px">
+                        <strong>Correo:</strong>
+                        <span id="userInfoEmail"></span>
+                    </p>
+
+                    <p style="margin-top:10px">
+                        <strong>Restaurante:</strong>
+                        <span id="userInfoRestaurante"></span>
+                    </p>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- MODAL AGREGAR EQUIPO -->
+    <div class="modal" id="equipoModal">
+
+        <div class="modal-card">
+
+            <div class="modal-head">
+
+                <h2>Agregar equipo</h2>
+
+                <button class="close-btn" id="closeModal">
+                    &times;
+                </button>
+
+            </div>
+
+
+            <form id="equipoForm">
+
+                <label>Nombre del equipo</label>
+                <input id="eqNombre" required>
+
+
+                <label>Potencia (W)</label>
+                <input id="eqPotencia"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    required>
+
+
+                <label>Horas de uso por día</label>
+                <input id="eqHoras"
+                    type="number"
+                    min="0"
+                    max="24"
+                    step="0.1"
+                    required>
+
+
+                <label>Días de uso al mes</label>
+                <input id="eqDias"
+                    type="number"
+                    min="0"
+                    max="31"
+                    required>
+
+
+                <button class="primary full" type="submit">
+                    Guardar equipo
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+    <script src="script.js"></script>
+
+</body>
+</html>
